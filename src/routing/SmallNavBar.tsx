@@ -1,15 +1,14 @@
-import React, {useState} from "react";
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import {AccountCircle} from "@mui/icons-material";
-import {Box, Menu, MenuItem} from "@mui/material";
-import {useAuth} from "../AuthProvider";
-import {useNavigate} from "react-router-dom";
-
+import React, { useState } from "react";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
+import { AccountCircle } from "@mui/icons-material";
+import { Box, Menu, MenuItem } from "@mui/material";
+import { useAuth } from "../AuthProvider";
+import { useNavigate } from "react-router-dom";
 
 export const SmallNavBar = () => {
     let auth = useAuth();
@@ -34,7 +33,8 @@ export const SmallNavBar = () => {
 
 
     return (
-        <AppBar position="sticky" enableColorOnDark>
+        <AppBar position="sticky" enableColorOnDark  sx={{ color: "white", fontWeight: "bold", background: "#495C83" }}
+        >
             <Toolbar>
                 <IconButton
                     size="large"
@@ -46,6 +46,7 @@ export const SmallNavBar = () => {
                 >
                     <MenuIcon/>
                 </IconButton>
+                <Button color="info" >Logout</Button>
                 <Menu
                     id="basic-menu"
                     anchorEl={anchorEl}
@@ -60,7 +61,7 @@ export const SmallNavBar = () => {
                     <MenuItem onClick={handleClose}>Menu2</MenuItem>
                 </Menu>
                 <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
-                    Template Name
+                    StudySpots
                 </Typography>
                 {auth.user ? (
                         <div>
