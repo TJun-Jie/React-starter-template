@@ -1,5 +1,6 @@
 import React from 'react'
 
+
 type SeatProps = {
     availableSeats: number,
     plugs: number,
