@@ -26,6 +26,7 @@ interface TableModalProps {
 
 export const TableModal = ({isOpen, setIsOpen, selectedTable} : TableModalProps) => {
     return (
+        //got 4 fields 
         <Modal
             open={isOpen}
             onClose={() => setIsOpen(false)}
@@ -35,10 +36,10 @@ export const TableModal = ({isOpen, setIsOpen, selectedTable} : TableModalProps)
             <Box sx={ style }>
                 <Typography id="modal-modal-title" variant="h6" component="h2">
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-                    Plugs 4
+                    {selectedTable.tableNumber}
                 </Typography>
                 <Typography id="modal-modal-description" sx={ { mt : 2 } }>
-                    5 seats
+                    {selectedTable.seats}
                 </Typography>
                 <Typography>1300</Typography>
             </Box>
