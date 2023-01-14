@@ -46,6 +46,7 @@ export const SmallNavBar = () => {
                 >
                     <MenuIcon/>
                 </IconButton>
+                <Button color="info" >Logout</Button>
                 <Menu
                     id="basic-menu"
                     anchorEl={anchorEl}

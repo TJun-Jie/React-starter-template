@@ -26,7 +26,7 @@ interface TableModalProps {
 
 export const TableModal = ({isOpen, setIsOpen, selectedTable} : TableModalProps) => {
     return (
-        //got 4 fields 
+        //got 4 fields
         <Modal
             open={isOpen}
             onClose={() => setIsOpen(false)}
