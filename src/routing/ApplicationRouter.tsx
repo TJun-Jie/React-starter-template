@@ -6,6 +6,7 @@ import {SmallNavBar } from "./SmallNavBar";
 import {SignUpPage} from "../pages/SignUp";
 import {LoginPage} from "../pages/SignIn";
 import PrivateRoute from "./PrivateRoute";
+import { MapPage } from "../pages/Map";
 
 function ApplicationRouter() {
     return (
@@ -21,6 +22,7 @@ function ApplicationRouter() {
                     <Route path="/login" element={<LoginPage />}/>
                     <Route path="/home" element={<PrivateRoute><HomePage /></PrivateRoute>} />
                     <Route path="/" element={<Navigate to="/home" replace />} />
+                    <Route path="/map" element={<MapPage/>}/>
                 </Routes>
             </Grid>
     )
