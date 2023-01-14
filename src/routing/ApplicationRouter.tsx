@@ -25,11 +25,11 @@ function ApplicationRouter() {
                     <Route path="/login" element={<LoginPage />}/>
                     <Route path="/checkinsuccess" element={<CheckInSuccess />}/>
                     <Route path="/checkoutsuccess" element={<CheckOutSuccess />}/>
-                    <Route path="/checkincheckout/:tableId" element={<CheckInCheckOut />}/>
+                    <Route path="/checkincheckout/:tableId" element={<PrivateRoute><CheckInCheckOut /></PrivateRoute>}/>
                     <Route path="/checkinform/:tableId" element={<CheckInForm />}/>
-                    <Route path="/home" element={<PrivateRoute><MapPage /></PrivateRoute>} />
+                    <Route path="/home" element={<MapPage />} />
                     <Route path="/" element={<Navigate to="/home" replace />} />
-                    <Route path="/map" element={<PrivateRoute><MapPage/></PrivateRoute>}/>
+                    <Route path="/map" element={<MapPage/>}/>
                 </Routes>
             </Grid>
     )
