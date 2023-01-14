@@ -60,7 +60,7 @@ export const SmallNavBar = () => {
                     <MenuItem onClick={handleClose}>Menu2</MenuItem>
                 </Menu>
                 <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
-                    Template Name
+                    StudySpots
                 </Typography>
                 {auth.user ? (
                         <div>
