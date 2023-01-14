@@ -1,27 +1,76 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { useParams } from "react-router-dom";
 import { Box, TextField, Button, Typography } from "@mui/material";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
+import { collection, addDoc, getDocs, setDoc, doc, updateDoc, getDoc } from "firebase/firestore";
+import { db } from "../../config/.firebaseSetup";
 
 export const CheckInForm = () => {
     const {tableId} = useParams();
+    const [currTable, setCurrTable] = useState({
+        available: true,
+        leavingTime: "",
+        plugs: 0,
+        seats: 0,
+        pax: 0,
+        tableNumber: "0",
+    });
 
     const navigate = useNavigate()
     const formik = useFormik({
         initialValues: {
             numberOfPax: '',
-            numberOfPlugs: '',
-            timeOccupiedTill: '',
+            leavingTime: '',
         },
         onSubmit: (values) =>{
-            console.log(values);
-            console.log(tableId);
+            const updatedTable = {
+                available: false,
+                leavingTime: values.leavingTime,
+                plugs: currTable.plugs,
+                pax: values.numberOfPax,
+                seats: currTable.seats,
+                tableNumber: currTable.tableNumber,
+            }
+            console.log(updatedTable)
             // Handle check in logic here
 
-            navigate('/checkinsuccess')
-        }
+            if (tableId != undefined) {
+                updateDoc(doc(db, "tables", tableId), updatedTable)
+                .then(docRef => {
+                    console.log("success")
+                }).catch(err => {
+                    console.log(err)
+                })
+                
+                navigate('/checkinsuccess')
+            }
+        },
     });
+
+    useEffect(() => {
+        if (tableId != undefined) {
+            getDoc(doc(db, "tables", tableId))
+            .then((querySnapshot) => {
+                const newData = querySnapshot.data();
+                console.log(newData)
+                if (newData != undefined) {
+                    setCurrTable({
+                        available: newData.available,
+                        leavingTime: newData.leavingTime,
+                        plugs: newData.plugs,
+                        pax: newData.pax,
+                        seats: newData.seats,
+                        tableNumber: newData.tableNumber,
+                    })
+                }
+            })
+            .catch((error) => {
+                console.log("Error getting document:", error);
+            })
+        }
+
+    }, []);
     
     return (
         <Box
@@ -48,27 +97,14 @@ export const CheckInForm = () => {
         </div>
         <div>
             <TextField
-                label="Number of Plugs"
-                id = "numberOfPlugs"
-                name = "numberOfPlugs"
-                type="number"
-                inputProps={{min:0, max:4}}
-                value = {formik.values.numberOfPlugs}
-                onChange={formik.handleChange}
-                error = {formik.touched.numberOfPlugs && Boolean(formik.errors.numberOfPlugs)}
-                helperText={formik.touched.numberOfPlugs && formik.errors.numberOfPlugs}
-            />
-        </div>
-        <div>
-            <TextField
-                label="Occupied Till"
-                id="timeOccupiedTill"
-                name="timeOccupiedTill"
+                label="Leaving Time"
+                id="leavingTime"
+                name="leavingTime"
                 type="time"
-                value={formik.values.timeOccupiedTill}
+                value={formik.values.leavingTime}
                 onChange={formik.handleChange}
-                error={formik.touched.timeOccupiedTill && Boolean(formik.errors.timeOccupiedTill)}
-                helperText={formik.touched.timeOccupiedTill && formik.errors.timeOccupiedTill}
+                error={formik.touched.leavingTime && Boolean(formik.errors.leavingTime)}
+                helperText={formik.touched.leavingTime && formik.errors.leavingTime}
             />
         </div>
         <Button color="primary" variant="contained" type="submit">Check In</Button>
