@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import { Box, Typography } from "@mui/material";
+import { db } from "../config/.firebaseSetup"
+import { collection, addDoc, getDocs } from "firebase/firestore";
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -15,8 +17,27 @@ const style = {
     p: 4,
   };
 
+export interface seatState {
+    available: boolean
+    leavingTime: string
+    plugs: number
+    tableNumber: string
+    seats: number
+}
+
 export const MapPage = () => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [seats, setSeats] = useState<seatState>({} as seatState)
+
+    useEffect(() => {
+        getDocs(collection(db, "seats"))
+            .then((querySnapshot)=>{
+                const newData = querySnapshot.docs
+                    .map((doc) => ({...doc.data() as seatState }));
+                // @ts-ignore
+                setSeats(newData);
+            })
+    }, []);
 
     return <div>
         <Button onClick={() => setIsOpen(true)}>1</Button>
