@@ -3,7 +3,6 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import React from "react";
-import { CheckOutSuccess } from './CheckOutSuccess';
 import { useNavigate } from 'react-router-dom';
 import {useAuth} from "../../AuthProvider";
 
@@ -13,7 +12,7 @@ export const CheckInCheckOut = () => {
 
     const currTable = {
         tableNumber: 1,
-        isInUse: true,
+        isInUse: false,
         numberOfSeats: 4,
         timeOccupiedTill: "12:00"
     }
@@ -22,7 +21,7 @@ export const CheckInCheckOut = () => {
         console.log("check in")
 
         if (auth.user && !currTable.isInUse) {
-            navigate("/checkinform")
+            navigate("/checkinform/" + currTable.tableNumber)
         }
     }
 

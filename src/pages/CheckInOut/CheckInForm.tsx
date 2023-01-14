@@ -1,18 +1,21 @@
 import React from "react";
+import { useParams } from "react-router-dom";
 import { Box, TextField, Button, Typography } from "@mui/material";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 
 export const CheckInForm = () => {
+    const {tableId} = useParams();
+
     const navigate = useNavigate()
     const formik = useFormik({
         initialValues: {
-            numberOfPax: '1',
-            timeOccupiedTill: '00:00',
+            numberOfPax: '',
+            timeOccupiedTill: '',
         },
         onSubmit: (values) =>{
             console.log(values);
-
+            console.log(tableId);
             // Handle check in logic here
 
             navigate('/checkinsuccess')
