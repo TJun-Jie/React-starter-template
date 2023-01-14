@@ -5,7 +5,7 @@ export const CheckInSuccess = () => {
     return (
         <Container sx={{ width: "50%", marginLeft: "auto" , marginRight: "auto" , marginTop: 7}}>
             <Alert severity="success" sx={{fontSize: "17px"}}>
-                You have successfully <strong>check in!</strong>
+                You have successfully <strong>checked in!</strong>
             </Alert>
         </Container>
         )

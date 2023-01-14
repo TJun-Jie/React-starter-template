@@ -26,10 +26,6 @@ export const SmallNavBar = () => {
         handleClose();
         navigate("/map");
     }
-    const navigateToHome = () => {
-        handleClose();
-        navigate("/home");
-    }
 
 
     return (
@@ -56,7 +52,6 @@ export const SmallNavBar = () => {
                         'aria-labelledby': 'basic-button',
                     }}
                 >
-                    <MenuItem onClick={navigateToHome}>Home</MenuItem>
                     <MenuItem onClick={navigateToMap}>Maps</MenuItem>
                     <MenuItem onClick={handleClose}>Menu2</MenuItem>
                 </Menu>
