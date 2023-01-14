@@ -2,39 +2,85 @@ import { Box, Button } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import React from "react";
-import { CheckOutSuccess } from './CheckOutSuccess';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from 'react-router-dom';
+import { collection, addDoc, getDocs, getDoc, doc, updateDoc } from "firebase/firestore";
 import {useAuth} from "../../AuthProvider";
+import { db } from "../../config/.firebaseSetup";
 
 export const CheckInCheckOut = () => {
+    const {tableId} = useParams();
+    const [currTable, setCurrTable] = useState({
+        available: true,
+        leavingTime: "",
+        plugs: 0,
+        seats: 0,
+        pax: 0,
+        tableNumber: "0",
+    });
+
     let auth = useAuth();
     const navigate = useNavigate();
 
-    const currTable = {
-        tableNumber: 1,
-        isInUse: true,
-        numberOfSeats: 4,
-        timeOccupiedTill: "12:00"
-    }
+    useEffect(() => {
+        if (tableId != undefined) {
+            getDoc(doc(db, "tables", tableId))
+            .then((querySnapshot) => {
+                const newData = querySnapshot.data();
+                console.log(newData)
+                if (newData != undefined) {
+                    setCurrTable({
+                        available: newData.available,
+                        leavingTime: newData.leavingTime,
+                        plugs: newData.plugs,
+                        pax: newData.pax,
+                        seats: newData.seats,
+                        tableNumber: newData.tableNumber,
+                    })
+                }
+            })
+            .catch((error) => {
+                console.log("Error getting document:", error);
+            })
+        }
+
+    }, []);
 
     const onCheckIn = () => {
         console.log("check in")
 
-        if (auth.user && !currTable.isInUse) {
-            navigate("/checkinform")
+        if (auth.user && currTable.available) {
+            navigate("/checkinform/" + tableId)
         }
     }
 
     const onCheckOut = () => {
         console.log("check out")
 
-        if (auth.user && currTable.isInUse) {
-            navigate("/checkoutsuccess")
+        if (auth.user && !currTable.available) {
+            const updatedTable = {
+                available: true,
+                leavingTime: "",
+                plugs: currTable.plugs,
+                pax: 0,
+                seats: currTable.seats,
+                tableNumber: currTable.tableNumber,
+            }
+            console.log(updatedTable)
+            // Handle check in logic here
 
-            // Do checkout database logic here
-            // currTable.isInUse = false;
+            if (tableId != undefined) {
+                updateDoc(doc(db, "tables", tableId), updatedTable)
+                .then(docRef => {
+                    console.log("success")
+                }).catch(err => {
+                    console.log(err)
+                })
+                
+                navigate("/checkoutsuccess")
+            }
         }
+
 
     }
 
@@ -48,28 +94,35 @@ export const CheckInCheckOut = () => {
         <Typography variant="h6" component="div">
           Table number : {currTable.tableNumber}
         </Typography>
-        <Typography variant="h4" component="div">
-          Status : {currTable.isInUse ? "Avaliable" : "Not available"}
-        </Typography>
-        {currTable.isInUse && <div>
             <Typography variant="h6" component="div">
-                Number of Seats : {currTable.numberOfSeats}
+                Number of Seats : {currTable.seats}
             </Typography>
             
             <Typography variant="h6" component="div">
-                Occupied Till : {currTable.timeOccupiedTill}
+                Number of Plugs : {currTable.plugs}
             </Typography>
-            </div>
-        }
-
+        <Typography variant="h4" component="div">
+          Status : {currTable.available ? "Avaliable" : "In use"}
+        </Typography>
+        
+        {!currTable.available && 
+        <div>
+        <Typography variant="h6" component="div">
+                Number of Pax : {currTable.pax}
+            </Typography>
+            
+        <Typography variant="h6" component="div">
+                Occupied Till : {currTable.leavingTime}
+            </Typography>
+        </div>}
       </CardContent>
     </Card>
       
         <div>
-            <Button color="primary" variant="contained" size="large" onClick={onCheckIn} disabled={currTable.isInUse}>Check In</Button>
+            <Button color="primary" variant="contained" size="large" onClick={onCheckIn} disabled={!currTable.available}>Check In</Button>
         </div>
         <div>
-            <Button color="primary" variant="contained" size="large" onClick={onCheckOut} disabled={!currTable.isInUse}>
+            <Button color="primary" variant="contained" size="large" onClick={onCheckOut} disabled={currTable.available}>
                 Check Out
             </Button>
         </div>

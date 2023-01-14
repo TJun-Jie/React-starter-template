@@ -1,7 +1,6 @@
 import Grid from "@mui/material/Grid";
 import React from "react";
-import {BrowserRouter as Router, Route, Routes, Navigate} from "react-router-dom";
-import { HomePage } from "../pages/Home";
+import {Route, Routes, Navigate} from "react-router-dom";
 import {SmallNavBar } from "./SmallNavBar";
 import {SignUpPage} from "../pages/SignUp";
 import {LoginPage} from "../pages/SignIn";
@@ -11,6 +10,7 @@ import { CheckInCheckOut } from "../pages/CheckInOut/CheckInCheckOut";
 import { CheckInForm } from "../pages/CheckInOut/CheckInForm";
 import PrivateRoute from "./PrivateRoute";
 import { MapPage } from "../pages/Map";
+import Error from "../pages/Error";
 
 function ApplicationRouter() {
     return (
@@ -26,11 +26,13 @@ function ApplicationRouter() {
                     <Route path="/login" element={<LoginPage />}/>
                     <Route path="/checkinsuccess" element={<CheckInSuccess />}/>
                     <Route path="/checkoutsuccess" element={<CheckOutSuccess />}/>
-                    <Route path="/checkincheckout" element={<CheckInCheckOut />}/>
-                    <Route path="/checkinform" element={<CheckInForm />}/>
-                    <Route path="/home" element={<PrivateRoute><HomePage /></PrivateRoute>} />
+                    <Route path="/checkincheckout/:tableId" element={<CheckInCheckOut />}/>
+                    <Route path="/checkinform/:tableId" element={<CheckInForm />}/>
+                    <Route path="/home" element={<PrivateRoute><MapPage /></PrivateRoute>} />
                     <Route path="/" element={<Navigate to="/home" replace />} />
                     <Route path="/map" element={<PrivateRoute><MapPage/></PrivateRoute>}/>
+                    <Route path="*" element={<Error />} />
+
                 </Routes>
             </Grid>
     )
