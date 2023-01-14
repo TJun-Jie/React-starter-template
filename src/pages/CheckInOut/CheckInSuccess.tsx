@@ -1,5 +1,12 @@
 import React from "react";
+import {Alert, AlertTitle, Container} from "@mui/material";
 
 export const CheckInSuccess = () => {
-    return (<div>Successfully checked in!</div>)
+    return (
+        <Container sx={{ width: "50%", marginLeft: "auto" , marginRight: "auto" , marginTop: 7}}>
+            <Alert severity="success" sx={{fontSize: "17px"}}>
+                You have successfully <strong>check in!</strong>
+            </Alert>
+        </Container>
+        )
 }
