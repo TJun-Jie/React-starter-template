@@ -5,7 +5,7 @@ const theme = createTheme({
         fontFamily: ['"Montserrat"', 'Open Sans'].join(',')
        },
     palette: {
-        info: {
+        primary: {
             main: "#495C83"
         }
        }
