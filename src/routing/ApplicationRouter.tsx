@@ -26,8 +26,8 @@ function ApplicationRouter() {
                     <Route path="/login" element={<LoginPage />}/>
                     <Route path="/checkinsuccess" element={<CheckInSuccess />}/>
                     <Route path="/checkoutsuccess" element={<CheckOutSuccess />}/>
-                    <Route path="/checkincheckout" element={<CheckInCheckOut />}/>
-                    <Route path="/checkinform" element={<CheckInForm />}/>
+                    <Route path="/checkincheckout/:tableId" element={<CheckInCheckOut />}/>
+                    <Route path="/checkinform/:tableId" element={<CheckInForm />}/>
                     <Route path="/home" element={<PrivateRoute><HomePage /></PrivateRoute>} />
                     <Route path="/" element={<Navigate to="/home" replace />} />
                     <Route path="/map" element={<PrivateRoute><MapPage/></PrivateRoute>}/>
