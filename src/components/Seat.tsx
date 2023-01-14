@@ -1,4 +1,5 @@
 import React from 'react'
+import {db} from "../config/.firebase";
 
 type SeatProps = {
     availableSeats: number,
