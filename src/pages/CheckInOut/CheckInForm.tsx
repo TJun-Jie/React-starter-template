@@ -15,6 +15,7 @@ export const CheckInForm = () => {
         seats: 0,
         pax: 0,
         tableNumber: "0",
+        reports: [],
     });
 
     const navigate = useNavigate()
@@ -24,6 +25,10 @@ export const CheckInForm = () => {
             leavingTime: '',
         },
         onSubmit: (values) =>{
+            if (values.leavingTime == '' || values.numberOfPax == '') {
+                console.log("empty")
+                return
+            }
             const updatedTable = {
                 available: false,
                 leavingTime: values.leavingTime,
@@ -31,6 +36,7 @@ export const CheckInForm = () => {
                 pax: values.numberOfPax,
                 seats: currTable.seats,
                 tableNumber: currTable.tableNumber,
+                reports: currTable.reports,
             }
             console.log(updatedTable)
             // Handle check in logic here
@@ -62,6 +68,7 @@ export const CheckInForm = () => {
                         pax: newData.pax,
                         seats: newData.seats,
                         tableNumber: newData.tableNumber,
+                        reports: newData.reports,
                     })
                 }
             })

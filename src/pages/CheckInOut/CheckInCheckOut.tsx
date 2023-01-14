@@ -64,28 +64,7 @@ export const CheckInCheckOut = () => {
     console.log("check out");
 
     if (auth.user && !currTable.available) {
-      const updatedTable = {
-        available: true,
-        leavingTime: "",
-        plugs: currTable.plugs,
-        pax: 0,
-        seats: currTable.seats,
-        tableNumber: currTable.tableNumber,
-      };
-      console.log(updatedTable);
-      // Handle check in logic here
-
-      if (tableId != undefined) {
-        updateDoc(doc(db, "tables", tableId), updatedTable)
-          .then((docRef) => {
-            console.log("success");
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-
-        navigate("/checkoutsuccess");
-      }
+      navigate("/checkoutform/" + tableId);
     }
   };
 
