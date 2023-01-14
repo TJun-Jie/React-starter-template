@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from "react";
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
-import { Box, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import { db } from "../config/.firebaseSetup"
 import { collection, addDoc, getDocs, setDoc, doc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import {TableModal} from "../components/TableModal";
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {FaPlug} from "react-icons/fa";
 
 export interface tableState {
     available: boolean
@@ -42,11 +43,17 @@ export const MapPage = () => {
         });
 
     }
-    return <Box sx={{ padding: 3}}>
+    // %4 == 1  // % 
+    return <Box sx={{ padding: 2}}>
         <Typography variant="h5" >
             Central Library Level 3
         </Typography>
-        <Box sx={{ padding: 2}}>
+        <Box display="flex"
+    justifyContent="center"
+    alignItems="center"
+    minHeight="100vh"
+    >
+        <Box width={500} sx={{ padding: 10}}>
             {
                 tables && tables.sort((table1, table2) => parseInt(table1.tableNumber) > parseInt(table2.tableNumber) ? 1 : -1).map(table => {
                     return (
@@ -55,12 +62,14 @@ export const MapPage = () => {
                             setSelectedTable(table)
                             setIsOpen(true)
                         }}
-                            sx={{border: "1px solid black", margin: 1, backgroundColor: table.available ? "#A2E4B8" : "#FF7276"}}
-                        >{table.tableNumber}</Button>
+                            sx={{border: "1px solid black", margin: 1, ml: (parseInt(table.tableNumber) % 2 === 1) ? 1 : 10,  backgroundColor: table.available ? "#A2E4B8" : "#FF7276"}}
+                        startIcon={(table.plugs > 0) ? <FaPlug/> : ""}
+                        >{table.tableNumber}</Button>       
                     )
                 })
             }
         </Box>
         <TableModal isOpen={isOpen} setIsOpen={setIsOpen} selectedTable={selectedTable}></TableModal>
+    </Box>
     </Box>
 }
