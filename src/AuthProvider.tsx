@@ -5,7 +5,7 @@ import React, {
     useContext,
     createContext,
 } from 'react'
-import { auth } from './firebaseSetup'
+import { auth } from './config/.firebaseSetup'
 import {
     Auth,
     UserCredential,
