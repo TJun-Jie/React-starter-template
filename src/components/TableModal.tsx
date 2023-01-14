@@ -2,6 +2,7 @@ import {Box, Typography} from "@mui/material";
 import React from "react";
 import Modal from "@mui/material/Modal";
 import Avatar from '@mui/material/Avatar';
+import {tableState} from "../pages/Map";
 
 const style = {
     position : 'absolute' as 'absolute',
@@ -20,9 +21,10 @@ const style = {
 interface TableModalProps {
     isOpen: boolean,
     setIsOpen:  React.Dispatch<React.SetStateAction<boolean>>
+    selectedTable: tableState
 }
 
-export const TableModal = ({isOpen, setIsOpen} : TableModalProps) => {
+export const TableModal = ({isOpen, setIsOpen, selectedTable} : TableModalProps) => {
     return (
         <Modal
             open={isOpen}

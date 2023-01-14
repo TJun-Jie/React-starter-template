@@ -18,24 +18,29 @@ export interface tableState {
 
 export const MapPage = () => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
-    const [tables, setTables] = useState<tableState>({} as tableState)
+    const [tables, setTables] = useState<tableState[]>([] as tableState[])
+    const [selectedTable, setSelectedTable] = useState<tableState>({} as tableState)
 
     useEffect(() => {
         getDocs(collection(db, "tables"))
             .then((querySnapshot)=>{
                 const newData = querySnapshot.docs
                     .map((doc) => ({...doc.data() as tableState }));
-                // @ts-ignore
-                setTables(newData);
+               setTables(newData);
             })
     }, []);
-    const navigate = useNavigate();
 
     return <div>
-        <Button onClick={() => setIsOpen(true)}>1A</Button>
-        <Button>1B</Button>
-        <Button>1C</Button>
-        <Button>1D</Button>
-        <TableModal isOpen={isOpen} setIsOpen={setIsOpen}></TableModal>
+        {
+            tables && tables.map(table => {
+                return (
+                    <Button onClick={() => {
+                        setSelectedTable(table)
+                        setIsOpen(true)
+                    }}>{table.tableNumber}</Button>
+                )
+            })
+        }
+        <TableModal isOpen={isOpen} setIsOpen={setIsOpen} selectedTable={selectedTable}></TableModal>
     </div>
 }
