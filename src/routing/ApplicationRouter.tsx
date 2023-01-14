@@ -10,6 +10,7 @@ import {CheckOutSuccess} from "../pages/CheckInOut/CheckOutSuccess";
 import { CheckInCheckOut } from "../pages/CheckInOut/CheckInCheckOut";
 import { CheckInForm } from "../pages/CheckInOut/CheckInForm";
 import PrivateRoute from "./PrivateRoute";
+import { MapPage } from "../pages/Map";
 
 function ApplicationRouter() {
     return (
@@ -29,6 +30,7 @@ function ApplicationRouter() {
                     <Route path="/checkinform" element={<CheckInForm />}/>
                     <Route path="/home" element={<PrivateRoute><HomePage /></PrivateRoute>} />
                     <Route path="/" element={<Navigate to="/home" replace />} />
+                    <Route path="/map" element={<MapPage/>}/>
                 </Routes>
             </Grid>
     )
