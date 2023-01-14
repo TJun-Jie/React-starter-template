@@ -10,6 +10,7 @@ import { CheckInCheckOut } from "../pages/CheckInOut/CheckInCheckOut";
 import { CheckInForm } from "../pages/CheckInOut/CheckInForm";
 import PrivateRoute from "./PrivateRoute";
 import { MapPage } from "../pages/Map";
+import Error from "../pages/Error";
 
 function ApplicationRouter() {
     return (
@@ -30,6 +31,7 @@ function ApplicationRouter() {
                     <Route path="/home" element={<MapPage />} />
                     <Route path="/" element={<Navigate to="/home" replace />} />
                     <Route path="/map" element={<MapPage/>}/>
+                    <Route path="*" element={<Error />} />
                 </Routes>
             </Grid>
     )
