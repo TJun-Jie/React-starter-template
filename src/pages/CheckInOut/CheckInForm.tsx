@@ -11,6 +11,7 @@ export const CheckInForm = () => {
     const formik = useFormik({
         initialValues: {
             numberOfPax: '',
+            numberOfPlugs: '',
             timeOccupiedTill: '',
         },
         onSubmit: (values) =>{
@@ -43,6 +44,19 @@ export const CheckInForm = () => {
                 onChange={formik.handleChange}
                 error = {formik.touched.numberOfPax && Boolean(formik.errors.numberOfPax)}
                 helperText={formik.touched.numberOfPax && formik.errors.numberOfPax}
+            />
+        </div>
+        <div>
+            <TextField
+                label="Number of Plugs"
+                id = "numberOfPlugs"
+                name = "numberOfPlugs"
+                type="number"
+                inputProps={{min:0, max:4}}
+                value = {formik.values.numberOfPlugs}
+                onChange={formik.handleChange}
+                error = {formik.touched.numberOfPlugs && Boolean(formik.errors.numberOfPlugs)}
+                helperText={formik.touched.numberOfPlugs && formik.errors.numberOfPlugs}
             />
         </div>
         <div>
