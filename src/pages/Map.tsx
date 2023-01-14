@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import { Box, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -17,6 +18,7 @@ const style = {
 
 export const MapPage = () => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
+    const navigate = useNavigate();
 
     return <div>
         <Button onClick={() => setIsOpen(true)}>1</Button>
