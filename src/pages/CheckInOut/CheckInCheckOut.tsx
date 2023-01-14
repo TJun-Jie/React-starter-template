@@ -4,7 +4,7 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
-import { collection, addDoc, getDocs, getDoc, doc } from "firebase/firestore";
+import { collection, addDoc, getDocs, getDoc, doc, updateDoc } from "firebase/firestore";
 import {useAuth} from "../../AuthProvider";
 import { db } from "../../config/.firebaseSetup";
 
@@ -58,11 +58,29 @@ export const CheckInCheckOut = () => {
         console.log("check out")
 
         if (auth.user && !currTable.available) {
-            navigate("/checkoutsuccess")
+            const updatedTable = {
+                available: true,
+                leavingTime: "",
+                plugs: currTable.plugs,
+                pax: 0,
+                seats: currTable.seats,
+                tableNumber: currTable.tableNumber,
+            }
+            console.log(updatedTable)
+            // Handle check in logic here
 
-            // Do checkout database logic here
-            // currTable.isInUse = false;
+            if (tableId != undefined) {
+                updateDoc(doc(db, "tables", tableId), updatedTable)
+                .then(docRef => {
+                    console.log("success")
+                }).catch(err => {
+                    console.log(err)
+                })
+                
+                navigate("/checkoutsuccess")
+            }
         }
+
 
     }
 

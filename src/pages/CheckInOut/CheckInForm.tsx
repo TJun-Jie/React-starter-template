@@ -88,7 +88,7 @@ export const CheckInForm = () => {
                 id = "numberOfPax"
                 name = "numberOfPax"
                 type="number"
-                inputProps={{min:1, max:4}}
+                inputProps={{min:1, max:currTable.seats}}
                 value = {formik.values.numberOfPax}
                 onChange={formik.handleChange}
                 error = {formik.touched.numberOfPax && Boolean(formik.errors.numberOfPax)}
