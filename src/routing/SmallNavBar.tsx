@@ -19,9 +19,18 @@ export const SmallNavBar = () => {
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
     };
+
     const handleClose = () => {
         setAnchorEl(null);
     };
+    const navigateToMap = () => {
+        handleClose();
+        navigate("/map");
+    }
+    const navigateToHome = () => {
+        handleClose();
+        navigate("/home");
+    }
 
 
     return (
@@ -46,8 +55,8 @@ export const SmallNavBar = () => {
                         'aria-labelledby': 'basic-button',
                     }}
                 >
-                    <MenuItem onClick={handleClose}>Home</MenuItem>
-                    <MenuItem onClick={handleClose}>Menu1</MenuItem>
+                    <MenuItem onClick={navigateToHome}>Home</MenuItem>
+                    <MenuItem onClick={navigateToMap}>Maps</MenuItem>
                     <MenuItem onClick={handleClose}>Menu2</MenuItem>
                 </Menu>
                 <Typography variant="h6" component="div" sx={{flexGrow: 1}}>

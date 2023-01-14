@@ -30,7 +30,7 @@ function ApplicationRouter() {
                     <Route path="/checkinform/:tableId" element={<CheckInForm />}/>
                     <Route path="/home" element={<PrivateRoute><HomePage /></PrivateRoute>} />
                     <Route path="/" element={<Navigate to="/home" replace />} />
-                    <Route path="/map" element={<MapPage/>}/>
+                    <Route path="/map" element={<PrivateRoute><MapPage/></PrivateRoute>}/>
                 </Routes>
             </Grid>
     )
