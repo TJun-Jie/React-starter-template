@@ -6,6 +6,11 @@ import { collection, addDoc, getDocs, Timestamp} from "firebase/firestore";
 import {TableModal} from "../components/TableModal";
 import {FaPlug} from "react-icons/fa";
 
+export interface Report {
+    description: string,
+    timestamp: Timestamp
+}
+
 export interface tableState {
     available: boolean
     leavingTime: string
@@ -15,12 +20,7 @@ export interface tableState {
     pax: number
     tableId: string
     noiseComplaint: number
-    reports: [
-        {
-            description: string,
-            timestamp: Timestamp
-        }
-    ]
+    reports:  Report[]
 }
 
 export const MapPage = () => {
