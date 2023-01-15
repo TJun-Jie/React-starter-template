@@ -52,7 +52,6 @@ export const CheckInCheckOut = () => {
     console.log("check out");
     const noise = currTable.noiseComplaint
     if (auth.user && !currTable.available) {
-
       navigate("/checkoutform/" + tableId);
     }
   };
