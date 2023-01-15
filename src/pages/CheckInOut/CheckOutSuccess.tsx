@@ -11,7 +11,7 @@ export const CheckOutSuccess = () => {
                     <Alert severity="success" sx={{fontSize: "17px"}}>
                         You have successfully <strong>checked out!</strong>
                     </Alert>
-                    {location.state.noiseComplaint > 0 ? <Alert severity="warning" sx={{mt:5}}>You have {location.state.noiseComplaint} noise complaint, please be <strong>quieter</strong> next time. </Alert> : <div></div>}
+                    {location.state.noiseComplaint > 0 ? <Alert severity="warning" sx={{mt:5}}>You have {location.state.noiseComplaint} noise complaint{location.state.noiseComplaint > 1 ? "s" : ""}, please be <strong>quieter</strong> next time. </Alert> : <div></div>}
             </Container>
         )
 }

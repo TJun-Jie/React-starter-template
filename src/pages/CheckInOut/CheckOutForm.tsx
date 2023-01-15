@@ -8,7 +8,7 @@ import { tableState } from "../Map";
 
 export const CheckOutForm = () => {
     const {tableId} = useParams();
-    const [currTable, setCurrTable] = useState<tableState>({} as tableState);
+    const [currTable, setCurrTable] = useState<tableState>({} as  tableState);
 
     const navigate = useNavigate()
     const formik = useFormik({
@@ -42,8 +42,8 @@ export const CheckOutForm = () => {
                 }).catch(err => {
                     console.log(err)
                 })
-                
-                navigate('/checkoutsuccess', {state: {noiseComplaint: currTable.noiseComplaint}})
+            
+                navigate('/checkoutsuccess' , {state: {noiseComplaint: currTable.noiseComplaint}})
             }
         },
     });
