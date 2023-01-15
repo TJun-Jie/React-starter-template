@@ -32,7 +32,11 @@ export const SmallNavBar = () => {
 
 
     return (
-        <AppBar position="sticky" enableColorOnDark  sx={{ color: "white", fontWeight: "bold", background: "#495C83" }}
+       <AppBar position="sticky" enableColorOnDark  sx={{ color: "white", fontWeight: "bold", background: "#495C83",
+           ...(isMobile && {
+               width: "600px"
+           }),
+       }}
         >
             <Toolbar>
                 <IconButton
