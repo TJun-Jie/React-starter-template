@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import { AccountCircle } from "@mui/icons-material";
-import { Box, Menu, MenuItem } from "@mui/material";
+import {Box, Menu, MenuItem, useMediaQuery, useTheme} from "@mui/material";
 import { useAuth } from "../AuthProvider";
 import { useNavigate } from "react-router-dom";
 
@@ -18,6 +18,8 @@ export const SmallNavBar = () => {
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
     };
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
     const handleClose = () => {
         setAnchorEl(null);
@@ -26,6 +28,7 @@ export const SmallNavBar = () => {
         handleClose();
         navigate("/map");
     }
+    console.log(isMobile)
 
 
     return (
@@ -42,7 +45,7 @@ export const SmallNavBar = () => {
                 >
                     <MenuIcon/>
                 </IconButton>
-                <Button color="primary" >Logout</Button>
+                {!isMobile ? <Button color="primary" >Logout</Button> : ""}
                 <Menu
                     id="basic-menu"
                     anchorEl={anchorEl}
@@ -59,7 +62,7 @@ export const SmallNavBar = () => {
                 </Typography>
                 {auth.user ? (
                         <div>
-                            <IconButton
+                            {!isMobile ?  <IconButton
                                 size="large"
                                 aria-label="account of current user"
                                 aria-controls="menu-appbar"
@@ -67,7 +70,8 @@ export const SmallNavBar = () => {
                                 color="inherit"
                             >
                                 <AccountCircle/>
-                            </IconButton>
+                            </IconButton> : ""}
+
                             <Button color="inherit" onClick={auth.logout}>Logout</Button>
                         </div>
                     ) :
