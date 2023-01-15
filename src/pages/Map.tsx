@@ -1,6 +1,15 @@
 import React, {useEffect, useState} from "react";
 import Button from '@mui/material/Button';
-import {Box, Typography, CircularProgress, Alert, Snackbar, LinearProgress} from "@mui/material";
+import {
+    Box,
+    Typography,
+    CircularProgress,
+    Alert,
+    Snackbar,
+    LinearProgress,
+    useTheme,
+    useMediaQuery
+} from "@mui/material";
 import { db } from "../config/.firebaseSetup"
 import { collection, addDoc, getDocs, Timestamp} from "firebase/firestore";
 import {TableModal} from "../components/TableModal";
@@ -26,6 +35,9 @@ export interface tableState {
 export const MapPage = () => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [tables, setTables] = useState<tableState[]>([] as tableState[])
+
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
     const [progress, setProgress] = useState<number>(0);
     const [selectedTable, setSelectedTable] = useState<tableState>({} as tableState);
@@ -75,13 +87,19 @@ export const MapPage = () => {
 
     }
 
+
     return (
         isLoading ?
             <Box sx={ { marginTop : "30px" } }>
                 <CircularProgress/>
             </Box>
             :
-            <Box sx={ { pt : 2 } }>
+            <Box sx={ { pt : 2 ,
+                ...(isMobile && {
+                    width: "600px"
+                })
+            }
+            }>
                 <Typography variant="h5">
                     Central Library Level 3
                 </Typography>

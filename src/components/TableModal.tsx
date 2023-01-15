@@ -1,4 +1,4 @@
-import {Box, Typography} from "@mui/material";
+import {Box, Typography, useTheme, useMediaQuery} from "@mui/material";
 import React from "react";
 import Modal from "@mui/material/Modal";
 import {FaPlug} from "react-icons/fa";
@@ -58,6 +58,9 @@ export const TableModal = ({
             console.log(err)
         })
     }
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+
     return (
         //got 4 fields
         <Modal
@@ -83,13 +86,14 @@ export const TableModal = ({
 
                     } }
                 >
-                    <AiOutlineBorderlessTable/>
+                    {isMobile ? "" : <AiOutlineBorderlessTable/>}
                     <Typography
                         id="modal-modal-title"
                         variant="h5"
                         component="h2"
                         fontWeight="bold"
-                        sx={ { marginLeft : "10px" } }
+                        noWrap= {isMobile ? true : false}
+                        sx={ { marginLeft: "10px" } }
                     >
                         Table { selectedTable.tableNumber }
                     </Typography>
