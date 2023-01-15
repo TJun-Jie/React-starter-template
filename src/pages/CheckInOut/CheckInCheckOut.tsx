@@ -64,7 +64,7 @@ export const CheckInCheckOut = () => {
 
   const onCheckOut = () => {
     console.log("check out");
-
+    const noise = currTable.noiseComplaint
     if (auth.user && !currTable.available) {
       const updatedTable = {
         available: true,
@@ -87,7 +87,7 @@ export const CheckInCheckOut = () => {
             console.log(err);
           });
 
-        navigate("/checkoutsuccess");
+        navigate("/checkoutsuccess", {state: {noiseComplaint: noise}});
       }
     }
   };

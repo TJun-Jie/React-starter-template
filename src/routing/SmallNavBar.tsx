@@ -53,7 +53,6 @@ export const SmallNavBar = () => {
                     }}
                 >
                     <MenuItem onClick={navigateToMap}>Maps</MenuItem>
-                    <MenuItem onClick={handleClose}>Menu2</MenuItem>
                 </Menu>
                 <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
                     StudySpots
