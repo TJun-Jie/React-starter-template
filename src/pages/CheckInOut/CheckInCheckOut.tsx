@@ -68,6 +68,7 @@ export const CheckInCheckOut = () => {
     }
   };
 
+
   return (
     <Box
       sx={{
@@ -101,6 +102,17 @@ export const CheckInCheckOut = () => {
               </Typography>
             </div>
           )}
+
+            {/* { currTable.reports.map((report) => {
+              return (
+                <div>
+                  <Typography variant="h6" component="div">
+                    {report.description}
+                  </Typography>
+                </div>
+              );
+            })} */}
+
         </CardContent>
       </Card>
 
