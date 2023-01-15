@@ -55,7 +55,6 @@ export const CheckInCheckOut = () => {
       navigate("/checkoutform/" + tableId);
     }
   };
-
   return (
     <Box
       sx={{
@@ -98,12 +97,9 @@ export const CheckInCheckOut = () => {
                 Reports : 
               </Typography>
 
-            {currTable.reports == undefined ?
-            <Box sx={{ marginTop: "30px"}}>
-               <CircularProgress />
-            </Box> 
-            : currTable.reports.length >= 1
-            ? 
+            {
+            currTable.reports && currTable.reports.length >= 1
+            ?
             currTable.reports.map((report) => {
               return (
                 <Box display="flex" flexDirection="column" justifyContent="center">
@@ -122,7 +118,8 @@ export const CheckInCheckOut = () => {
             })
             : <Typography variant="h6" component="div">
                 No reports
-                </Typography>}
+                </Typography>
+            }
 
         </CardContent>
       </Card>
