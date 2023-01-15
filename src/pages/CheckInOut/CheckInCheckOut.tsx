@@ -4,6 +4,7 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import {CircularProgress} from "@mui/material";
 import {
   collection,
   addDoc,
@@ -14,18 +15,11 @@ import {
 } from "firebase/firestore";
 import { useAuth } from "../../AuthProvider";
 import { db } from "../../config/.firebaseSetup";
+import { tableState } from "../Map";
 
 export const CheckInCheckOut = () => {
   const { tableId } = useParams();
-  const [currTable, setCurrTable] = useState({
-    available: true,
-    leavingTime: "",
-    plugs: 0,
-    seats: 0,
-    pax: 0,
-    tableNumber: "0",
-    noiseComplaint: 0,
-  });
+  const [currTable, setCurrTable] = useState<tableState>({} as tableState);
 
   let auth = useAuth();
   const navigate = useNavigate();
@@ -37,15 +31,7 @@ export const CheckInCheckOut = () => {
           const newData = querySnapshot.data();
           console.log(newData);
           if (newData != undefined) {
-            setCurrTable({
-              available: newData.available,
-              leavingTime: newData.leavingTime,
-              plugs: newData.plugs,
-              pax: newData.pax,
-              seats: newData.seats,
-              tableNumber: newData.tableNumber,
-              noiseComplaint: newData.noiseComplaint
-            });
+            setCurrTable(newData as tableState);
           }
         })
         .catch((error) => {
@@ -66,29 +52,7 @@ export const CheckInCheckOut = () => {
     console.log("check out");
 
     if (auth.user && !currTable.available) {
-      const updatedTable = {
-        available: true,
-        leavingTime: "",
-        plugs: currTable.plugs,
-        pax: 0,
-        seats: currTable.seats,
-        tableNumber: currTable.tableNumber,
-        noiseComplaint: 0
-      };
-      console.log(updatedTable);
-      // Handle check in logic here
-
-      if (tableId != undefined) {
-        updateDoc(doc(db, "tables", tableId), updatedTable)
-          .then((docRef) => {
-            console.log("success");
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-
-        navigate("/checkoutsuccess");
-      }
+      navigate("/checkoutform/" + tableId);
     }
   };
 
@@ -114,6 +78,10 @@ export const CheckInCheckOut = () => {
             Number of Plugs : {currTable.plugs}
           </Typography>
 
+          <Typography variant="h6" component="div">
+            Noise Complaint : {currTable.noiseComplaint}
+          </Typography>
+
           {!currTable.available && (
             <div>
               <Typography variant="h6" component="div">
@@ -125,6 +93,37 @@ export const CheckInCheckOut = () => {
               </Typography>
             </div>
           )}
+
+<Typography variant="h6" component="div">
+                Reports : 
+              </Typography>
+
+            {currTable.reports == undefined ?
+            <Box sx={{ marginTop: "30px"}}>
+               <CircularProgress />
+            </Box> 
+            : currTable.reports.length >= 1
+            ? 
+            currTable.reports.map((report) => {
+              return (
+                <Box display="flex" flexDirection="column" justifyContent="center">
+                  <Box display="flex" flexDirection="row" justifyContent="space-around">
+                  <Typography variant="h6" component="div">
+                    {report.description}
+                  </Typography>
+
+                  
+                  <Typography variant="h6" component="div">
+                    {report.timestamp.toDate().getDate()}/{report.timestamp.toDate().getMonth() + 1}/{report.timestamp.toDate().getFullYear()}
+                  </Typography>
+                  </Box>
+                </Box>
+              );
+            })
+            : <Typography variant="h6" component="div">
+                No reports
+                </Typography>}
+
         </CardContent>
       </Card>
 

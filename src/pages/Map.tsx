@@ -1,9 +1,8 @@
 import React, {useEffect, useState} from "react";
 import Button from '@mui/material/Button';
-
-import {Alert, Box, CircularProgress, LinearProgress, Snackbar, Typography} from "@mui/material";
-import {db} from "../config/.firebaseSetup"
-import {addDoc, collection, getDocs} from "firebase/firestore";
+import {Box, Typography, CircularProgress, Alert, Snackbar, LinearProgress} from "@mui/material";
+import { db } from "../config/.firebaseSetup"
+import { collection, addDoc, getDocs, Timestamp} from "firebase/firestore";
 import {TableModal} from "../components/TableModal";
 import {FaPlug} from "react-icons/fa";
 
@@ -16,6 +15,12 @@ export interface tableState {
     pax: number
     tableId: string
     noiseComplaint: number
+    reports: [
+        {
+            description: string,
+            timestamp: Timestamp
+        }
+    ]
 }
 
 export const MapPage = () => {
