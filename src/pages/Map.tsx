@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react";
 import Button from '@mui/material/Button';
-import {Box, CircularProgress, Typography} from "@mui/material";
-import {db} from "../config/.firebaseSetup"
-import {addDoc, collection, getDocs} from "firebase/firestore";
+import { Box, Typography, CircularProgress} from "@mui/material";
+import { db } from "../config/.firebaseSetup"
+import { collection, addDoc, getDocs} from "firebase/firestore";
 import {TableModal} from "../components/TableModal";
-
+import {FaPlug} from "react-icons/fa";
 
 export interface tableState {
     available: boolean
@@ -81,6 +81,7 @@ export const MapPage = () => {
                                         margin : 1,
                                         backgroundColor : table.available ? "#A2E4B8" : "#FF7276"
                                     } }
+                                    startIcon={(table.plugs > 0) ? <FaPlug/> : ""}
                                 >{ table.tableNumber }</Button>
                             )
                         })
@@ -89,5 +90,4 @@ export const MapPage = () => {
                 <TableModal isOpen={ isOpen } setIsOpen={ setIsOpen } selectedTable={ selectedTable } setRefreshData={setRefreshData}></TableModal>
             </Box>
     )
-
 }
