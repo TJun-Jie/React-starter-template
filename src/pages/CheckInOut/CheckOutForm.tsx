@@ -4,18 +4,11 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { updateDoc, doc, getDoc, Timestamp } from "firebase/firestore";
 import { db } from "../../config/.firebaseSetup";
+import { tableState } from "../Map";
 
 export const CheckOutForm = () => {
     const {tableId} = useParams();
-    const [currTable, setCurrTable] = useState({
-        available: true,
-        leavingTime: "",
-        plugs: 0,
-        seats: 0,
-        pax: 0,
-        tableNumber: "0",
-        reports: [],
-    });
+    const [currTable, setCurrTable] = useState<tableState>({} as  tableState);
 
     const navigate = useNavigate()
     const formik = useFormik({
@@ -50,7 +43,7 @@ export const CheckOutForm = () => {
                     console.log(err)
                 })
                 
-                navigate('/checkoutsuccess')
+                navigate('/checkoutsuccess' , {state: {noiseComplaint: currTable.noiseComplaint}})
             }
         },
     });
@@ -62,15 +55,7 @@ export const CheckOutForm = () => {
               const newData = querySnapshot.data();
               console.log(newData);
               if (newData != undefined) {
-                setCurrTable({
-                  available: newData.available,
-                  leavingTime: newData.leavingTime,
-                  plugs: newData.plugs,
-                  pax: newData.pax,
-                  seats: newData.seats,
-                  tableNumber: newData.tableNumber,
-                  reports: newData.reports,
-                });
+                setCurrTable(newData as tableState);
               }
             })
             .catch((error) => {
