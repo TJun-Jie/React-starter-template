@@ -6,6 +6,9 @@ import {AiFillClockCircle, AiOutlineBorderlessTable} from "react-icons/ai";
 import {MdEventSeat} from "react-icons/md";
 import {TbMoodSad, TbMoodSmile} from "react-icons/tb";
 import {tableState} from "../pages/Map";
+import {doc, updateDoc} from "firebase/firestore";
+import {db} from "../config/.firebaseSetup";
+import Button from "@mui/material/Button";
 
 const style = {
     position : "absolute" as "absolute",
@@ -24,13 +27,37 @@ interface TableModalProps {
     isOpen: boolean;
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
     selectedTable: tableState;
+    setRefreshData: React.Dispatch<React.SetStateAction<boolean>>
+    setSnackBarOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export const TableModal = ({
                                isOpen,
                                setIsOpen,
                                selectedTable,
+                                setRefreshData,
+                                setSnackBarOpen
                            }: TableModalProps) => {
+
+    const onClickHandler = () => {
+        const values = {
+            available: selectedTable.available,
+            leavingTime: selectedTable.leavingTime,
+            plugs: selectedTable.plugs,
+            pax: selectedTable.pax,
+            seats: selectedTable.seats,
+            tableNumber: selectedTable.tableNumber,
+            noiseComplaint: selectedTable.noiseComplaint ? selectedTable.noiseComplaint+ 1 : 1
+            }
+        updateDoc(doc(db, "tables", selectedTable.tableId), values)
+            .then(docRef => {
+                setRefreshData(true)
+                setSnackBarOpen(true)
+                setIsOpen(false)
+            }).catch(err => {
+            console.log(err)
+        })
+    }
     return (
         //got 4 fields
         <Modal
@@ -153,6 +180,39 @@ export const TableModal = ({
                             { selectedTable.available ? "-" : selectedTable.leavingTime }
                         </Typography>
                     </Box> : "" }
+                    {
+                        !selectedTable.available ?   <Box
+                            display="flex"
+                            sx={ {
+                                alignItems : "center",
+                                flexWrap : "wrap",
+                                justifyContent : "center",
+                            } }>
+                            <Typography
+                                id="modal-modal-title"
+                                variant="h6"
+                                component="h2"
+                                sx={ { marginLeft : "10px" } }
+                            >
+                                Noise Complaint : { selectedTable.noiseComplaint }
+                            </Typography>
+
+                        </Box> : ""
+                    }
+                    {
+                        !selectedTable.available ?   <Box
+                            display="flex"
+                            sx={ {
+                                alignItems : "center",
+                                flexWrap : "wrap",
+                                justifyContent : "center",
+                                marginTop: 1
+                            } }>
+                            <Button variant="contained" onClick={onClickHandler}>Too Loud!</Button>
+
+                        </Box> : ""
+                    }
+
 
                 </Box>
             </Box>

@@ -24,6 +24,7 @@ export const CheckInCheckOut = () => {
     seats: 0,
     pax: 0,
     tableNumber: "0",
+    noiseComplaint: 0,
   });
 
   let auth = useAuth();
@@ -43,6 +44,7 @@ export const CheckInCheckOut = () => {
               pax: newData.pax,
               seats: newData.seats,
               tableNumber: newData.tableNumber,
+              noiseComplaint: newData.noiseComplaint
             });
           }
         })
@@ -64,7 +66,29 @@ export const CheckInCheckOut = () => {
     console.log("check out");
 
     if (auth.user && !currTable.available) {
-      navigate("/checkoutform/" + tableId);
+      const updatedTable = {
+        available: true,
+        leavingTime: "",
+        plugs: currTable.plugs,
+        pax: 0,
+        seats: currTable.seats,
+        tableNumber: currTable.tableNumber,
+        noiseComplaint: 0
+      };
+      console.log(updatedTable);
+      // Handle check in logic here
+
+      if (tableId != undefined) {
+        updateDoc(doc(db, "tables", tableId), updatedTable)
+          .then((docRef) => {
+            console.log("success");
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+
+        navigate("/checkoutsuccess");
+      }
     }
   };
 
