@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { Box, TextField, Button, Typography } from "@mui/material";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
-import { collection, addDoc, getDocs, setDoc, doc, updateDoc, getDoc } from "firebase/firestore";
+import { collection, addDoc, getDocs, setDoc, doc, updateDoc, getDoc,Timestamp } from "firebase/firestore";
 import { db } from "../../config/.firebaseSetup";
 
 export const CheckInForm = () => {
@@ -15,6 +15,7 @@ export const CheckInForm = () => {
         seats: 0,
         pax: 0,
         tableNumber: "0",
+        reports: [],
     });
 
     const navigate = useNavigate()
@@ -24,6 +25,10 @@ export const CheckInForm = () => {
             leavingTime: '',
         },
         onSubmit: (values) =>{
+            if (values.leavingTime == '' || values.numberOfPax == '') {
+                console.log("empty")
+                return
+            }
             const updatedTable = {
                 available: false,
                 leavingTime: values.leavingTime,
@@ -31,6 +36,7 @@ export const CheckInForm = () => {
                 pax: values.numberOfPax,
                 seats: currTable.seats,
                 tableNumber: currTable.tableNumber,
+                reports: currTable.reports,
             }
             console.log(updatedTable)
             // Handle check in logic here
@@ -62,6 +68,7 @@ export const CheckInForm = () => {
                         pax: newData.pax,
                         seats: newData.seats,
                         tableNumber: newData.tableNumber,
+                        reports: newData.reports,
                     })
                 }
             })
