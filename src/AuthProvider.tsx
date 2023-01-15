@@ -5,7 +5,7 @@ import React, {
     useContext,
     createContext,
 } from 'react'
-import { auth } from './firebaseSetup'
+import { auth } from './config/.firebaseSetup'
 import {
     Auth,
     UserCredential,
@@ -15,6 +15,7 @@ import {
     sendPasswordResetEmail,
     signOut
 } from 'firebase/auth'
+import {bool} from "yup";
 
 export interface AuthProviderProps {
     children? : ReactNode
@@ -36,6 +37,7 @@ export interface AuthContextModel {
     signUp: (email: string, password: string) => Promise<UserCredential>
     sendPasswordResetEmail?: (email: string) => Promise<void>
     logout: () => Promise<void>
+    loading: boolean
 }
 
 export const AuthContext = React.createContext<AuthContextModel>({} as AuthContextModel)
@@ -46,6 +48,8 @@ export function useAuth(): AuthContextModel {
 
 export const AuthProvider = ( { children }: AuthProviderProps) : JSX.Element => {
     const [user, setUser] = useState<User | null>(null)
+    const [loading, setLoading] = useState<boolean>(true)
+    console.log(loading)
 
     function signUp(email: string, password: string): Promise<UserCredential> {
         return createUserWithEmailAndPassword(auth, email, password)
@@ -63,14 +67,17 @@ export const AuthProvider = ( { children }: AuthProviderProps) : JSX.Element => 
         return signOut(auth);
     }
 
+
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((user) => {
             setUser(user)
+            setLoading(false)
         })
         return unsubscribe
     }, [])
 
     const values = {
+        loading,
         signUp,
         user,
         signIn,

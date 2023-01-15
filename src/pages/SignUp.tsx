@@ -28,7 +28,7 @@ export const SignUpPage = () => {
         onSubmit: async (values) => {
             try {
                 await signUp(values.email, values.password);
-                navigate('/home')
+                navigate("/home")
                 console.log("success");
             } catch(error) {
                console.log(error)

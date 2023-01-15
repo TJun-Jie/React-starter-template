@@ -5,13 +5,18 @@ import Button from "@mui/material/Button";
 import * as Yup from 'yup';
 import {useFormik} from "formik";
 import { useAuth } from "../AuthProvider";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useLocation} from "react-router-dom";
 
 const validationSchema =  Yup.object().shape({
     email: Yup.string().email('Invalid email').required('Required'),
     password: Yup.string().required("Password is required").min(6 ,"Password must be at least 6 Character long"),
 })
 export const LoginPage = () => {
+    const navigate = useNavigate();
+    const { signIn } = useAuth();
+    const { state } = useLocation();
+    const prev = state?.prevPath || "/home";
+
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -21,16 +26,13 @@ export const LoginPage = () => {
         onSubmit: async (values) => {
             try {
                 await signIn(values.email, values.password)
-                navigate('/home')
                 console.log("success");
+                navigate(prev)
             } catch(error) {
                 console.log(error)
             }
         }
     });
-    const navigate = useNavigate();
-
-    const { signIn } = useAuth();
 
 
     return (
