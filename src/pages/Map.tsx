@@ -1,12 +1,10 @@
 import React, {useEffect, useState} from "react";
 import Button from '@mui/material/Button';
-import Modal from '@mui/material/Modal';
-import { Box, Grid, LinearProgress, Typography } from "@mui/material";
+
+import {Box, Typography, CircularProgress, Alert, Snackbar, LinearProgress} from "@mui/material";
 import { db } from "../config/.firebaseSetup"
-import { collection, addDoc, getDocs, setDoc, doc } from "firebase/firestore";
-import { useNavigate } from "react-router-dom";
+import { collection, addDoc, getDocs} from "firebase/firestore";
 import {TableModal} from "../components/TableModal";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {FaPlug} from "react-icons/fa";
 
 export interface tableState {
@@ -15,41 +13,64 @@ export interface tableState {
     plugs: number
     tableNumber: string
     seats: number
+    pax: number
+    tableId: string
+    noiseComplaint: number
 }
 
 export const MapPage = () => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [tables, setTables] = useState<tableState[]>([] as tableState[])
-    const [selectedTable, setSelectedTable] = useState<tableState>({} as tableState)
-    const [progress, setProgress] = useState<number>(0);
 
-    useEffect(() => {
+    const [progress, setProgress] = useState<number>(0);
+    const [selectedTable, setSelectedTable] = useState<tableState>({} as tableState);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [refreshData, setRefreshData] = useState<boolean>(true);
+    const [snackBarOpen, setSnackBarOpen] = useState<boolean>(false);
+
+    const getData = () => {
+
         getDocs(collection(db, "tables"))
-            .then((querySnapshot)=>{
+            .then((querySnapshot) => {
                 const newData = querySnapshot.docs
-                    .map((doc) => ({...doc.data() as tableState }));
-               setTables(newData);
+                    .map((doc) => ({...doc.data(), tableId : doc.id}));
                let notAvailable = querySnapshot.docs
                .map((doc) => ({...doc.data() as tableState}));
                notAvailable = notAvailable.filter(table => !table.available);
                setProgress((notAvailable.length/newData.length) * 100);
+               // @ts-ignore
+                setTables(newData);
+                setIsLoading(false);
+                setRefreshData(false);
             })
-    }, []);
+    }
+
+    useEffect(() => {
+        if (refreshData) {
+            getData();
+        }
+    }, [refreshData]);
     //population script
     const func = async () => {
 
-        await addDoc(collection(db, "tables") ,{
-            available: true,
-            leavingTime: "1400",
-            pax: 4,
-            plugs: 2,
-            seats: 4,
-            tableNumber: "30"
+        await addDoc(collection(db, "tables"), {
+            available : true,
+            leavingTime : "1400",
+            pax : 4,
+            plugs : 2,
+            seats : 4,
+            tableNumber : "30"
         });
 
     }
-    // %4 == 1  // % 
-    return <Box sx={{ pt: 2}}>
+
+    return (
+        isLoading ?
+            <Box sx={ { marginTop : "30px" } }>
+            <CircularProgress/>
+            </Box>
+            :
+        <Box sx={{ pt: 2}}>
         <Typography variant="h5" >
             Central Library Level 3
         </Typography>
@@ -77,7 +98,12 @@ export const MapPage = () => {
                 })
             }
         </Box>
-        <TableModal isOpen={isOpen} setIsOpen={setIsOpen} selectedTable={selectedTable}></TableModal>
+        <TableModal isOpen={ isOpen } setIsOpen={ setIsOpen } selectedTable={ selectedTable } setRefreshData={setRefreshData} setSnackBarOpen={setSnackBarOpen}></TableModal>
+                <Snackbar open={snackBarOpen} autoHideDuration={6000} onClose={() => setSnackBarOpen(false)}>
+                    <Alert onClose={() => setSnackBarOpen(false)} severity="success" sx={{ width: '100%' }}>
+                        Complaint Submitted
+                    </Alert>
+                </Snackbar>
     </Box>
     </Box>
 }
