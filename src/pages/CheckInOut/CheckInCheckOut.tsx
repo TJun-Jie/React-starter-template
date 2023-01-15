@@ -14,18 +14,11 @@ import {
 } from "firebase/firestore";
 import { useAuth } from "../../AuthProvider";
 import { db } from "../../config/.firebaseSetup";
+import { tableState } from "../Map";
 
 export const CheckInCheckOut = () => {
   const { tableId } = useParams();
-  const [currTable, setCurrTable] = useState({
-    available: true,
-    leavingTime: "",
-    plugs: 0,
-    seats: 0,
-    pax: 0,
-    tableNumber: "0",
-    noiseComplaint: 0,
-  });
+  const [currTable, setCurrTable] = useState<tableState>({} as tableState);
 
   let auth = useAuth();
   const navigate = useNavigate();
@@ -37,15 +30,7 @@ export const CheckInCheckOut = () => {
           const newData = querySnapshot.data();
           console.log(newData);
           if (newData != undefined) {
-            setCurrTable({
-              available: newData.available,
-              leavingTime: newData.leavingTime,
-              plugs: newData.plugs,
-              pax: newData.pax,
-              seats: newData.seats,
-              tableNumber: newData.tableNumber,
-              noiseComplaint: newData.noiseComplaint
-            });
+            setCurrTable(newData as tableState);
           }
         })
         .catch((error) => {
@@ -66,29 +51,7 @@ export const CheckInCheckOut = () => {
     console.log("check out");
 
     if (auth.user && !currTable.available) {
-      const updatedTable = {
-        available: true,
-        leavingTime: "",
-        plugs: currTable.plugs,
-        pax: 0,
-        seats: currTable.seats,
-        tableNumber: currTable.tableNumber,
-        noiseComplaint: 0
-      };
-      console.log(updatedTable);
-      // Handle check in logic here
-
-      if (tableId != undefined) {
-        updateDoc(doc(db, "tables", tableId), updatedTable)
-          .then((docRef) => {
-            console.log("success");
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-
-        navigate("/checkoutsuccess");
-      }
+      navigate("/checkoutform/" + tableId);
     }
   };
 
