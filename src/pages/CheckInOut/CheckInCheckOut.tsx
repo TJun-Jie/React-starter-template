@@ -4,6 +4,7 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import {CircularProgress} from "@mui/material";
 import {
   collection,
   addDoc,
@@ -55,7 +56,6 @@ export const CheckInCheckOut = () => {
     }
   };
 
-
   return (
     <Box
       sx={{
@@ -78,6 +78,10 @@ export const CheckInCheckOut = () => {
             Number of Plugs : {currTable.plugs}
           </Typography>
 
+          <Typography variant="h6" component="div">
+            Noise Complaint : {currTable.noiseComplaint}
+          </Typography>
+
           {!currTable.available && (
             <div>
               <Typography variant="h6" component="div">
@@ -90,15 +94,35 @@ export const CheckInCheckOut = () => {
             </div>
           )}
 
-            {/* { currTable.reports.map((report) => {
+<Typography variant="h6" component="div">
+                Reports : 
+              </Typography>
+
+            {currTable.reports == undefined ?
+            <Box sx={{ marginTop: "30px"}}>
+               <CircularProgress />
+            </Box> 
+            : currTable.reports.length >= 1
+            ? 
+            currTable.reports.map((report) => {
               return (
-                <div>
+                <Box display="flex" flexDirection="column" justifyContent="center">
+                  <Box display="flex" flexDirection="row" justifyContent="space-around">
                   <Typography variant="h6" component="div">
                     {report.description}
                   </Typography>
-                </div>
+
+                  
+                  <Typography variant="h6" component="div">
+                    {report.timestamp.toDate().getDate()}/{report.timestamp.toDate().getMonth() + 1}/{report.timestamp.toDate().getFullYear()}
+                  </Typography>
+                  </Box>
+                </Box>
               );
-            })} */}
+            })
+            : <Typography variant="h6" component="div">
+                No reports
+                </Typography>}
 
         </CardContent>
       </Card>

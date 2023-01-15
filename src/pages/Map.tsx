@@ -17,8 +17,10 @@ export interface tableState {
     tableId: string
     noiseComplaint: number
     reports: [
-        description: string,
-        timestamp: Timestamp
+        {
+            description: string,
+            timestamp: Timestamp
+        }
     ]
 }
 
