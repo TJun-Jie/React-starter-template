@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid, LinearProgress, Typography } from "@mui/material";
 import { db } from "../config/.firebaseSetup"
 import { collection, addDoc, getDocs, setDoc, doc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
@@ -21,6 +21,7 @@ export const MapPage = () => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [tables, setTables] = useState<tableState[]>([] as tableState[])
     const [selectedTable, setSelectedTable] = useState<tableState>({} as tableState)
+    const [progress, setProgress] = useState<number>(0);
 
     useEffect(() => {
         getDocs(collection(db, "tables"))
@@ -28,6 +29,10 @@ export const MapPage = () => {
                 const newData = querySnapshot.docs
                     .map((doc) => ({...doc.data() as tableState }));
                setTables(newData);
+               let notAvailable = querySnapshot.docs
+               .map((doc) => ({...doc.data() as tableState}));
+               notAvailable = notAvailable.filter(table => !table.available);
+               setProgress((notAvailable.length/newData.length) * 100);
             })
     }, []);
     //population script
@@ -44,15 +49,18 @@ export const MapPage = () => {
 
     }
     // %4 == 1  // % 
-    return <Box sx={{ padding: 2}}>
+    return <Box sx={{ pt: 2}}>
         <Typography variant="h5" >
             Central Library Level 3
         </Typography>
+        <Box sx={{mt:5, ml:10, mr:10}}>
+        <LinearProgress variant="determinate" value= {progress} sx={{height:30}}/>
+        </Box>
         <Box display="flex"
     justifyContent="center"
     alignItems="center"
-    minHeight="100vh"
-    >
+    minHeight="80vh"
+    > 
         <Box width={500} sx={{ padding: 10}}>
             {
                 tables && tables.sort((table1, table2) => parseInt(table1.tableNumber) > parseInt(table2.tableNumber) ? 1 : -1).map(table => {
