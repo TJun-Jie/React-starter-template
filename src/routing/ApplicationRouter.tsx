@@ -8,6 +8,7 @@ import {CheckInSuccess} from "../pages/CheckInOut/CheckInSuccess";
 import {CheckOutSuccess} from "../pages/CheckInOut/CheckOutSuccess";
 import { CheckInCheckOut } from "../pages/CheckInOut/CheckInCheckOut";
 import { CheckInForm } from "../pages/CheckInOut/CheckInForm";
+import { CheckOutForm } from "../pages/CheckInOut/CheckOutForm";
 import PrivateRoute from "./PrivateRoute";
 import { MapPage } from "../pages/Map";
 import Error from "../pages/Error";
@@ -28,6 +29,7 @@ function ApplicationRouter() {
                     <Route path="/checkoutsuccess" element={<CheckOutSuccess />}/>
                     <Route path="/checkincheckout/:tableId" element={<PrivateRoute><CheckInCheckOut /></PrivateRoute>}/>
                     <Route path="/checkinform/:tableId" element={<CheckInForm />}/>
+                    <Route path="/checkoutform/:tableId" element={<CheckOutForm />}/>
                     <Route path="/home" element={<MapPage />} />
                     <Route path="/" element={<Navigate to="/home" replace />} />
                     <Route path="/map" element={<MapPage/>}/>
