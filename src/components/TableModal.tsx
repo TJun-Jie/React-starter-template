@@ -28,13 +28,15 @@ interface TableModalProps {
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
     selectedTable: tableState;
     setRefreshData: React.Dispatch<React.SetStateAction<boolean>>
+    setSnackBarOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export const TableModal = ({
                                isOpen,
                                setIsOpen,
                                selectedTable,
-                                setRefreshData
+                                setRefreshData,
+                                setSnackBarOpen
                            }: TableModalProps) => {
 
     const onClickHandler = () => {
@@ -50,6 +52,8 @@ export const TableModal = ({
         updateDoc(doc(db, "tables", selectedTable.tableId), values)
             .then(docRef => {
                 setRefreshData(true)
+                setSnackBarOpen(true)
+                setIsOpen(false)
             }).catch(err => {
             console.log(err)
         })

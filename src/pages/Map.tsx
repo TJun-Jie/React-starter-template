@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import Button from '@mui/material/Button';
-import { Box, Typography, CircularProgress} from "@mui/material";
+import {Box, Typography, CircularProgress, Alert, Snackbar} from "@mui/material";
 import { db } from "../config/.firebaseSetup"
 import { collection, addDoc, getDocs} from "firebase/firestore";
 import {TableModal} from "../components/TableModal";
@@ -23,6 +23,7 @@ export const MapPage = () => {
     const [selectedTable, setSelectedTable] = useState<tableState>({} as tableState);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [refreshData, setRefreshData] = useState<boolean>(true);
+    const [snackBarOpen, setSnackBarOpen] = useState<boolean>(false);
 
     const getData = () => {
 
@@ -87,7 +88,12 @@ export const MapPage = () => {
                         })
                     }
                 </Box>
-                <TableModal isOpen={ isOpen } setIsOpen={ setIsOpen } selectedTable={ selectedTable } setRefreshData={setRefreshData}></TableModal>
+                <TableModal isOpen={ isOpen } setIsOpen={ setIsOpen } selectedTable={ selectedTable } setRefreshData={setRefreshData} setSnackBarOpen={setSnackBarOpen}></TableModal>
+                <Snackbar open={snackBarOpen} autoHideDuration={6000} onClose={() => setSnackBarOpen(false)}>
+                    <Alert onClose={() => setSnackBarOpen(false)} severity="success" sx={{ width: '100%' }}>
+                        Complaint Submitted
+                    </Alert>
+                </Snackbar>
             </Box>
     )
 }
